@@ -21,6 +21,24 @@ def creating_dict(list):
     return cook_book
 
 
+def get_shop_list_by_dishes(menu, number_persons):
+    ingredients_dict = {}
+    for dish_in_list in menu:
+        for dish, ingredients in cook.items():
+            if dish == dish_in_list:
+                for ingredient in ingredients:
+                    name = ingredient['ingredient_name']
+                    if name in ingredients_dict:
+                        q = number_persons * int(ingredient['quantity'])
+                        previous_q = int(ingredients_dict[name]['quantity'])
+                        ingredients_dict[name]['quantity'] = str(q + previous_q)
+                    else:
+                        q = number_persons * int(ingredient['quantity'])
+                        ingredients_dict[name] = {'measure': ingredient['measure'], 'quantity': q}
+    res = dict(sorted(ingredients_dict.items()))
+    return res
+
+
 with open('file.txt') as f:
     data = f.readlines()
     dishes = []
@@ -32,6 +50,7 @@ with open('file.txt') as f:
             continue
         recipes = recipes + dish
 
-
-print(creating_dict(dishes))
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+cook = creating_dict(dishes)
+print(get_shop_list_by_dishes(['Омлет', 'Запеченный картофель'], 3))
+
